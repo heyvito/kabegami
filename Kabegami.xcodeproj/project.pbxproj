@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DAAB1B6E27547A3D00D2495F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB1B6D27547A3D00D2495F /* AppDelegate.swift */; };
-		DAAB1B7027547A3D00D2495F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB1B6F27547A3D00D2495F /* ViewController.swift */; };
 		DAAB1B7227547A4000D2495F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAAB1B7127547A4000D2495F /* Assets.xcassets */; };
 		DAAB1B7D27547A6300D2495F /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB1B7C27547A6300D2495F /* Generator.swift */; };
 		DAAB1B7F275486D600D2495F /* StatusbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAAB1B7E275486D600D2495F /* StatusbarController.swift */; };
@@ -19,7 +18,6 @@
 /* Begin PBXFileReference section */
 		DAAB1B6A27547A3D00D2495F /* Kabegami.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kabegami.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAAB1B6D27547A3D00D2495F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DAAB1B6F27547A3D00D2495F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DAAB1B7127547A4000D2495F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAAB1B7627547A4000D2495F /* Kabegami.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kabegami.entitlements; sourceTree = "<group>"; };
 		DAAB1B7C27547A6300D2495F /* Generator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
@@ -62,7 +60,6 @@
 				DAAB1B7E275486D600D2495F /* StatusbarController.swift */,
 				DAAB1B802754882A00D2495F /* Info.plist */,
 				DAAB1B6D27547A3D00D2495F /* AppDelegate.swift */,
-				DAAB1B6F27547A3D00D2495F /* ViewController.swift */,
 				DAAB1B7127547A4000D2495F /* Assets.xcassets */,
 				DAAB1B7627547A4000D2495F /* Kabegami.entitlements */,
 				DAAB1B7C27547A6300D2495F /* Generator.swift */,
@@ -144,7 +141,6 @@
 				DAAB1B7D27547A6300D2495F /* Generator.swift in Sources */,
 				DAAB1B8227548A7C00D2495F /* main.swift in Sources */,
 				DAAB1B7F275486D600D2495F /* StatusbarController.swift in Sources */,
-				DAAB1B7027547A3D00D2495F /* ViewController.swift in Sources */,
 				DAAB1B8427548FAE00D2495F /* FileSystem.swift in Sources */,
 				DAAB1B6E27547A3D00D2495F /* AppDelegate.swift in Sources */,
 			);
