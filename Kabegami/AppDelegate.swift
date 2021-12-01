@@ -8,19 +8,18 @@
 import Cocoa
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-
     var statusBar: StatusBarController?
     var menu = NSMenu()
     var refreshOnWake: NSMenuItem?
     var refreshOnLaunch: NSMenuItem?
     var oneImagePerDisplay: NSMenuItem?
     var generator = Generator()
-    
+
     let kRefreshOnWake = "kRefreshOnWake"
     let kRefreshOnLaunch = "kRefreshOnLaunch"
     let kOneImagePerDisplay = "kOneImagePerDisplay"
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
+    func applicationDidFinishLaunching(_: Notification) {
         menu.addItem(withTitle: "Kabegami", action: nil, keyEquivalent: "")
         menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "Refresh", action: #selector(doRefresh(_:)), keyEquivalent: "")
@@ -32,20 +31,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "Project Homepage", action: #selector(projectHomePage(_:)), keyEquivalent: "")
         menu.addItem(withTitle: "Quit", action: #selector(quit(_:)), keyEquivalent: "")
-        
-        statusBar = StatusBarController.init(menu)
-        
+
+        statusBar = StatusBarController(menu)
+
         updateToggles()
-        
+
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(wakeListener(_:)),
-                                                              name: NSWorkspace.didWakeNotification, object: nil)
-        
+                                                          name: NSWorkspace.didWakeNotification, object: nil)
+
         if refreshOnLaunch!.state == .on {
             doRefresh(self)
         }
     }
 
-    func applicationWillTerminate(_ aNotification: Notification) {
+    func applicationWillTerminate(_: Notification) {
         // Insert code here to tear down your application
     }
 
@@ -55,22 +54,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
+    func applicationSupportsSecureRestorableState(_: NSApplication) -> Bool {
         return false
     }
-    
+
     func updateToggles() {
         let ud = UserDefaults.standard
-        
+
         refreshOnWake!.state = ud.bool(forKey: kRefreshOnWake) ? .on : .off
         refreshOnLaunch!.state = ud.bool(forKey: kRefreshOnLaunch) ? .on : .off
         oneImagePerDisplay!.state = ud.bool(forKey: kOneImagePerDisplay) ? .on : .off
     }
-    
+
     @objc func doRefresh(_: AnyObject) {
         let imagesToGenerate = UserDefaults.standard.bool(forKey: kOneImagePerDisplay) ? NSScreen.screens.count : 1
-        for i in 0..<imagesToGenerate {
-            if !FileSystem.saveImage(generator.makeImage(), forDisplay: i, apply: true) {
+        let images = generator.makeImages(quantity: imagesToGenerate)
+        for i in 0 ..< imagesToGenerate {
+            if !FileSystem.saveImage(images[i], forDisplay: i, apply: true) {
                 let alert = NSAlert()
                 alert.alertStyle = .critical
                 alert.messageText = "Could not set wallpaper"
@@ -80,7 +80,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
+
     @objc func saveCurrentImage(_: AnyObject) {
         guard let allImages = FileSystem.images() else {
             let alert = NSAlert()
@@ -90,7 +90,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
             return
         }
-        
+
         if allImages.isEmpty {
             let alert = NSAlert()
             alert.alertStyle = .warning
@@ -99,7 +99,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
             return
         }
-        
+
         guard let urls = FileSystem.exportToDownloads() else {
             let alert = NSAlert()
             alert.alertStyle = .critical
@@ -108,36 +108,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
             return
         }
-        
+
         NSWorkspace.shared.activateFileViewerSelecting(urls)
     }
-    
+
     func toggleUserDefault(named name: String) {
         let ud = UserDefaults.standard
         ud.set(!ud.bool(forKey: name), forKey: name)
     }
-    
+
     @objc func toggleRefreshOnWake(_: AnyObject) {
         toggleUserDefault(named: kRefreshOnWake)
         updateToggles()
     }
-    
+
     @objc func toggleRefreshOnLaunch(_: AnyObject) {
         toggleUserDefault(named: kRefreshOnLaunch)
         updateToggles()
     }
-    
+
     @objc func toggleOneImagePerDisplay(_: AnyObject) {
         toggleUserDefault(named: kOneImagePerDisplay)
         updateToggles()
     }
-    
+
     @objc func projectHomePage(_: AnyObject) {
         NSWorkspace.shared.open(URL(string: "https://github.com/heyvito/kabegami")!)
     }
-    
+
     @objc func quit(_ sender: AnyObject) {
         NSApp.terminate(sender)
     }
 }
-

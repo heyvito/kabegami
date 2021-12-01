@@ -5,14 +5,14 @@
 //  Created by Victor Gama on 29/11/21.
 //
 
-import Foundation
 import AppKit
+import Foundation
 
 class FileSystem {
     fileprivate static var targetDir: URL = {
         FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }()
-    
+
     class func exportToDownloads() -> [URL]? {
         let url: URL
         do {
@@ -33,27 +33,27 @@ class FileSystem {
                 return nil
             }
         }
-        
+
         return urls
     }
-    
+
     class func images() -> [URL]? {
         do {
             let directoryContents = try FileManager.default.contentsOfDirectory(at: targetDir, includingPropertiesForKeys: nil)
-            return directoryContents.filter{ $0.pathExtension == "png" }
+            return directoryContents.filter { $0.pathExtension == "png" }
         } catch let err {
             NSLog("Failed reading files: \(err)")
             return nil
         }
     }
-    
+
     class func saveImage(_ img: NSImage, forDisplay display: Int, apply: Bool) -> Bool {
         guard let cgRef = img.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return false }
         let newRep = NSBitmapImageRep(cgImage: cgRef)
         newRep.size = img.size
         guard let pngData = newRep.representation(using: .png, properties: [:]) else { return false }
         let targetImage = targetDir.appendingPathComponent("\(display)-\(UUID().uuidString).png")
-            
+
         do {
             if let allImages = images() {
                 if let toRemove = allImages.first(where: { $0.pathComponents.last!.starts(with: "\(display)-") }) {
@@ -66,7 +66,7 @@ class FileSystem {
             NSLog("Failed writing file: \(err)")
             return false
         }
-        
+
         if apply {
             do {
                 try NSWorkspace.shared.setDesktopImageURL(targetImage, for: NSScreen.screens[display], options: [:])
